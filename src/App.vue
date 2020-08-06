@@ -1,59 +1,69 @@
 <template>
   <div id="app">
-    <header class="site-header jumbotron">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-12">
-            <h1>请发表对Vue的评论</h1>
-          </div>
-        </div>
+    <div class="todo-container">
+      <div class="todo-wrap">
+        <Header :addItem="addItem"/>
+        <DoList :items="items" :deleteItem="deleteItem"/>
+        <Footer :items="items" :deleteAll="deleteAll" :selectAll="selectAll"/>
       </div>
-    </header>
-    <div class="container">
-      <Add :addcomment="addcomment"/>
-      <List :comments="comments" :deletecomment="deletecomment"/>
     </div>
   </div>
 </template>
 
 <script>
-  import Add from './components/Add'
-  import List from './components/List'
+  import Header from './component/Header'
+  import DoList from './component/DoList'
+  import Footer from './component/Footer'
 
   export default {
     name: 'App',
-    data(){
-      return{
-        comments:[
-          {
-            name:'x',
-            content:'ok'
-          },
-          {
-            name:'y',
-            content: 'no problem'
-          }
-        ]
+    data() {
+      return {
+        //从localStorage读取items
+        items: JSON.parse(window.localStorage.getItem('list_key') || '[]')
       }
     },
-    methods: {
-      //添加评论
-      addcomment(comment){
-        this.comments.unshift(comment)
+    methods:{
+      //添加任务
+      addItem(item){
+        this.items.unshift(item)
       },
-      //删除指定评论
-      deletecomment(index){
-        this.comments.splice(index,1)
+      //删除任务
+      deleteItem(index){
+        this.items.splice(index,1)
+      },
+      //删除所有选中
+      deleteAll(){
+        this.items = this.items.filter(item => !item.complete)
+      },
+      //全选或全不选
+      selectAll(check){
+        this.items.forEach(item => item.complete = check)
       }
     },
-    components: {
-      Add,
-      List
+    watch:{  //深度监视
+      items:{
+        deep:true,
+        handler:function (val) {
+          //最新值保存到localStorage
+          window.localStorage.setItem('list_key',JSON.stringify(val))
+        }
+      }
+    },
+    components:{
+      Header,DoList,Footer
     }
   }
 </script>
 
-<style>
-
+<style scoped>
+  .todo-container {
+    width: 600px;
+    margin: 0 auto;
+  }
+  .todo-container .todo-wrap {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
 </style>
-
