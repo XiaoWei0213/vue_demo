@@ -4,12 +4,7 @@
       <div class="todo-wrap">
         <Header :addItem="addItem"/>
         <DoList :items="items" :deleteItem="deleteItem"/>
-        <!--<Footer :items="items" :deleteAll="deleteAll" :selectAll="selectAll"/>-->
-        <TestSlot>
-          <input type="checkbox" v-model="checked" slot="first"/>
-          <span slot="second">已完成{{computeSize}} / 全部{{items.length}}</span>
-          <button class="btn btn-danger" v-show="computeSize" @click="deleteAll" slot="third">清除已完成任务</button>
-        </TestSlot>
+        <Footer :items="items" :deleteAll="deleteAll" :selectAll="selectAll"/>
       </div>
     </div>
   </div>
@@ -18,15 +13,14 @@
 <script>
   import Header from './component/Header'
   import DoList from './component/DoList'
-  import TestSlot from './component/TestSlot'
-  import StorageUtil from './util/StorageUtil'
+  import Footer from './component/Footer'
 
   export default {
     name: 'App',
     data() {
       return {
         //从localStorage读取items
-        items: StorageUtil.readList()
+        items: JSON.parse(window.localStorage.getItem('list_key') || '[]')
       }
     },
     methods:{
@@ -52,26 +46,12 @@
         deep:true,
         handler:function (val) {
           //最新值保存到localStorage
-          //window.localStorage.setItem('list_key',JSON.stringify(val))
-          StorageUtil.saveList(val)
+          window.localStorage.setItem('list_key',JSON.stringify(val))
         }
       }
     },
     components:{
-      Header,DoList,TestSlot
-    },
-    computed:{
-      computeSize(){
-        return this.items.reduce((total,item) => total + (item.complete?1:0),0)
-      },
-      checked:{  //计算属性的特性
-        get(){
-          return this.computeSize === this.items.length && this.computeSize > 0
-        },
-        set(value){  //value是当前checkbox的最新值
-          this.selectAll(value)
-        }
-      }
+      Header,DoList,Footer,
     }
   }
 </script>
