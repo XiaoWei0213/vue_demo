@@ -1,34 +1,34 @@
 <template>
-  <div id="app">
-    <div v-if="!repoUrl">loading</div>
-    <div v-else>most star repo is<a href="repoUrl">{{repoName}}</a> </div>
+  <div>
+    <div class="row">
+      <div class="col-xs-offset-2 col-xs-8">
+        <div class="page-header"><h2>Router Basic</h2></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-2 col-xs-offset-2">
+        <div class="list-group">
+          <!--<a href="" class="list-group-item router-link-exact-active activeClass">About</a>
+          <a href="" class="list-group-item">Home</a>-->
+          <router-link to="/about" class="list-group-item">About</router-link>
+          <router-link to="/home" class="list-group-item">Home</router-link>
+        </div>
+      </div>
+      <div class="col-xs-6">
+        <div class="panel">
+          <div class="panel-body">
+            <router-view></router-view>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import axios from 'axios'
   export default {
-    name: 'App',
-    data(){
-      return{
-        repoUrl: '',
-        repoName: ''
-      }
-    },
-    mounted () {
-      //发送ajax请求获取数据
-      //1、使用vue-resource
-      //2、使用axios
-      const url = 'https://api.githun.com/search/repositories?q=v&sort=stars'
-      axios.get(url).then(reponse => {
-        const res = reponse.data
-        const mostRepo = res.item[0]
-        this.repoUrl = mostRepo.html_url
-        this.repoName = mostRepo.name
-      }).catch(error => {
-        alert('请求失败')
-      })
-    }
+    name: 'App'
   }
 </script>
 
