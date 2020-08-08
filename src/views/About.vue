@@ -1,12 +1,15 @@
 <template>
   <div>
-    about
+    <h2>About</h2>
+    <div>
+      请输入：<input type="text">
+    </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: 'About'
+    name: 'About',
   }
 </script>
 

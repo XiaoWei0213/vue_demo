@@ -18,7 +18,10 @@
       <div class="col-xs-6">
         <div class="panel">
           <div class="panel-body">
-            <router-view></router-view>
+            <!--每次路由请求都会重新创建组件，希望保持以前内容可以使用<keep-alive></keep-alive>进行缓存-->
+            <keep-alive>
+              <router-view></router-view>
+            </keep-alive>
           </div>
         </div>
       </div>
