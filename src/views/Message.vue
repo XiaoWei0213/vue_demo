@@ -1,10 +1,17 @@
 <template>
   <div>
     <ul>
-      <li v-for="(msg) in msgs" :key="msg.id">
-        <a href="/xxx">{{msg.title}}</a>
+      <li v-for="msg in msgs" :key="msg.id">
+        <router-link :to="`/home/message/detail/${msg.id}`">{{msg.title}}</router-link>
+        <button @click="pushShow(msg.id)">push查看</button>
+        <button @click="replaceShow(msg.id)">replace查看</button>
       </li>
     </ul>
+    <button @click="$router.back()">回退</button>
+    <hr>
+    <div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -35,6 +42,15 @@
         ]
         this.msgs = messages
       },1000)
+    },
+    methods:{
+      //编程式导航
+      pushShow(id){
+        this.$router.push(`/home/message/detail/${id}`)
+      },
+      replaceShow(id){
+        this.$router.replace(`/home/message/detail/${id}`)
+      }
     }
   }
 </script>
