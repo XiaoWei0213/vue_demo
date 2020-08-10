@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import App from './App-origin'
-import store from './store'
+import App from './App'
+import router from './router'
 
 Vue.config.productionTip = false
 
@@ -9,5 +9,5 @@ new Vue({
   el: '#app',
   components: { App },
   template: '<App/>',
-  store    //所有组件对象都多了一个属性$store
+  router: router
 })

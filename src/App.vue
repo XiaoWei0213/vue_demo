@@ -1,40 +1,54 @@
 <template>
   <div>
-    <div class="row">
-      <div class="col-xs-offset-2 col-xs-8">
-        <div class="page-header"><h2>Router Basic</h2></div>
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-2 col-xs-offset-2">
-        <div class="list-group">
-          <!--<a href="" class="list-group-item router-link-exact-active activeClass">About</a>
-          <a href="" class="list-group-item">Home</a>-->
-          <router-link to="/about" class="list-group-item">About</router-link>
-          <router-link to="/home" class="list-group-item">Home</router-link>
-        </div>
-      </div>
-      <div class="col-xs-6">
-        <div class="panel">
-          <div class="panel-body">
-            <!--每次路由请求都会重新创建组件，希望保持以前内容可以使用<keep-alive></keep-alive>进行缓存-->
-            <keep-alive>
-              <router-view></router-view>
-            </keep-alive>
-          </div>
-        </div>
-      </div>
-    </div>
+    <p>click {{/*$store.state.count*/ count}} times ,count is {{EvenOrOdd}}</p>
+    <button @click="increment">+</button>
+    <button @click="decrement">-</button>
+    <button @click="incrementIf">increment if odd</button>
+    <button @click="incrementAsync">increment async</button>
   </div>
 </template>
 
 <script>
+  import {mapState,mapGetters,mapActions} from 'vuex'
+
   export default {
-    name: 'App'
+    name: 'App',
+    //优化版
+    computed:{
+      ...mapState(['count']),
+      ...mapActions(['EvenOrOdd'])
+    },
+    //原始版
+    /*computed:{
+      EvenOrOdd() {
+        return this.$store.getters.EvenOrOdd  //模板不需要写this
+      }
+    },*/
+    //优化版
+    methods:{
+      ...mapActions(['increment','decrement','incrementIf','incrementAsync'])
+    }
+    //原始版
+    /*methods:{
+      increment(){
+        //通知vuex去增加
+        this.$store.dispatch('increment')
+      },
+      decrement(){
+        //通知vuex去减少
+        this.$store.dispatch('decrement')
+      },
+      incrementIf(){
+        this.$store.dispatch('incrementIf')
+      },
+      incrementAsync(){
+        this.$store.dispatch('incrementAsync')
+      }
+    }*/
   }
 </script>
 
 <style scoped>
 
 </style>
+
